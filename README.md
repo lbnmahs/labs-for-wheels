@@ -1,106 +1,188 @@
-# Template for Isaac Lab Projects
+# Labs for Wheels
+
+An isolated extension for wheeled robotics simulation and reinforcement learning, built on Isaac Lab.
 
 ## Overview
 
-This project/repository serves as a template for building projects or extensions based on Isaac Lab.
-It allows you to develop in an isolated environment, outside of the core Isaac Lab repository.
+This project is an **adaptation of [WheeledLab](https://github.com/UWRobotLearning/WheeledLab)** by the University of Washington Robot Learning Lab, restructured as an isolated environment outside of the core Isaac Lab repository. This allows for independent development and extension of wheeled robotics capabilities while maintaining compatibility with the Isaac Lab ecosystem.
 
 **Key Features:**
 
-- `Isolation` Work outside the core Isaac Lab repository, ensuring that your development efforts remain self-contained.
-- `Flexibility` This template is set up to allow your code to be run as an extension in Omniverse.
+- **Isolation**: Work outside the core Isaac Lab repository, ensuring that your development efforts remain self-contained
+- **Flexibility**: This extension is set up to allow your code to be run as an extension in Omniverse
+- **Modularity**: Clean separation of tasks, assets, and configurations for easy extension
+- **RL-Ready**: Pre-configured environments for reinforcement learning with RSL-RL and skrl
 
-**Keywords:** extension, template, isaaclab
+**Future Features (In Development):**
+
+- Spatial reasoning for obstacle detection
+- Visual semantic navigation
+- Advanced waypoint following
+
+## Prerequisites
+
+Before installing this extension, ensure you have the following:
+
+- **Ubuntu 22.04+** (or Windows with WSL2)
+- **CUDA-capable GPU** (NVIDIA GPU recommended)
+- **Python 3.10 or 3.11**
+- **Isaac Sim 5.1.0** (latest recommended)
+- **Isaac Lab** (latest version recommended)
 
 ## Installation
 
-- Install Isaac Lab by following the [installation guide](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/index.html).
-  We recommend using the conda or uv installation as it simplifies calling Python scripts from the terminal.
+### Step 1: Install Isaac Sim and Isaac Lab
 
-- Clone or copy this project/repository separately from the Isaac Lab installation (i.e. outside the `IsaacLab` directory):
+We recommend using the latest versions for the best compatibility and features:
 
-- Using a python interpreter that has Isaac Lab installed, install the library in editable mode using:
+**Install Isaac Sim 5.1.0:**
 
-    ```bash
-    # use 'PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-    python -m pip install -e source/wheeled_lab
+```bash
+# Create a conda environment (you can name it anything, e.g., 'labs_for_wheels')
+conda create -n wheeled_lab python=3.10
+conda activate wheeled_lab
 
-- Verify that the extension is correctly installed by:
+# Install PyTorch (adjust CUDA version as needed)
+pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cu121  # For CUDA 12.1
+# OR
+pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cu118  # For CUDA 11.8
 
-    - Listing the available tasks:
+# Install Isaac Sim 5.1.0
+pip install --upgrade pip
+pip install 'isaacsim[all,extscache]==5.1.0' --extra-index-url https://pypi.nvidia.com
+```
 
-        Note: It the task name changes, it may be necessary to update the search pattern `"Template-"`
-        (in the `scripts/list_envs.py` file) so that it can be listed.
+**Install Isaac Lab (Latest Version):**
 
-        ```bash
-        # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-        python scripts/list_envs.py
-        ```
+```bash
+# Clone Isaac Lab (use the latest version)
+git clone https://github.com/isaac-sim/IsaacLab.git
+cd IsaacLab
 
-    - Running a task:
+# Install Isaac Lab (make sure you have build dependencies: cmake, build-essential)
+./isaaclab.sh -i
+```
 
-        ```bash
-        # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-        python scripts/<RL_LIBRARY>/train.py --task=<TASK_NAME>
-        ```
+For detailed installation instructions, see the [Isaac Lab Installation Guide](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/index.html).
 
-    - Running a task with dummy agents:
+### Step 2: Install Labs for Wheels Extension
 
-        These include dummy agents that output zero or random agents. They are useful to ensure that the environments are configured correctly.
+1. **Clone this repository** separately from the Isaac Lab installation (i.e., outside the `IsaacLab` directory):
 
-        - Zero-action agent
+```bash
+cd ~/Development  # or your preferred development directory
+git clone <your-repo-url> labs-for-wheels
+cd labs-for-wheels
+```
 
-            ```bash
-            # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-            python scripts/zero_agent.py --task=<TASK_NAME>
-            ```
-        - Random-action agent
+2. **Install the extension** in editable mode:
 
-            ```bash
-            # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-            python scripts/random_agent.py --task=<TASK_NAME>
-            ```
+```bash
+# Activate your Isaac Lab conda environment
+conda activate wheeled_lab  # or your Isaac Lab environment name
 
-### Set up IDE (Optional)
+# Install the extension
+python -m pip install -e source/wheeled_lab
+```
 
-To setup the IDE, please follow these instructions:
+**Note**: If Isaac Lab is not installed in a Python venv or conda environment, use `PATH_TO_isaaclab.sh -p` instead of `python`:
 
-- Run VSCode Tasks, by pressing `Ctrl+Shift+P`, selecting `Tasks: Run Task` and running the `setup_python_env` in the drop down menu.
-  When running this task, you will be prompted to add the absolute path to your Isaac Sim installation.
+```bash
+<IsaacLab>/isaaclab.sh -p -m pip install -e source/wheeled_lab
+```
 
-If everything executes correctly, it should create a file .python.env in the `.vscode` directory.
-The file contains the python paths to all the extensions provided by Isaac Sim and Omniverse.
-This helps in indexing all the python modules for intelligent suggestions while writing code.
+### Step 3: Verify Installation
+
+Verify that the extension is correctly installed:
+
+**List available environments:**
+
+```bash
+python scripts/list_envs.py
+```
+
+You should see environments with the prefix `Template-WheeledLab-` listed.
+
+
+
+## IDE Setup (Optional but Recommended)
+
+Setting up your IDE with proper IntelliSense is **strongly recommended** for development efficiency.
+
+### VSCode Setup
+
+1. **Run the setup task:**
+   - Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac)
+   - Select `Tasks: Run Task`
+   - Choose `setup_python_env`
+   - Follow the prompts to provide the absolute path to your Isaac Sim installation
+
+2. **Verify setup:**
+   - A `.python.env` file should be created in the `.vscode` directory
+   - This file contains Python paths to all Isaac Sim and Omniverse extensions
+   - IntelliSense should now work for Isaac Lab and Isaac Sim modules
+
+3. **Install Python extension:**
+   - Make sure you have the Microsoft Python extension installed in VSCode
 
 ### Setup as Omniverse Extension (Optional)
 
-We provide an example UI extension that will load upon enabling your extension defined in `source/wheeled_lab/wheeled_lab/ui_extension_example.py`.
+To enable this extension in Omniverse:
 
-To enable your extension, follow these steps:
+1. **Add extension search paths:**
+   - Open Omniverse → `Window` → `Extensions`
+   - Click the **Hamburger Icon** → `Settings`
+   - In `Extension Search Paths`, add:
+     - Absolute path to this repository's `source` directory
+     - Path to Isaac Lab's extension directory (`IsaacLab/source`)
+   - Click **Hamburger Icon** → `Refresh`
 
-1. **Add the search path of this project/repository** to the extension manager:
-    - Navigate to the extension manager using `Window` -> `Extensions`.
-    - Click on the **Hamburger Icon**, then go to `Settings`.
-    - In the `Extension Search Paths`, enter the absolute path to the `source` directory of this project/repository.
-    - If not already present, in the `Extension Search Paths`, enter the path that leads to Isaac Lab's extension directory directory (`IsaacLab/source`)
-    - Click on the **Hamburger Icon**, then click `Refresh`.
+2. **Enable the extension:**
+   - Find `labs_for_wheels` (or `wheeled_lab` depending on package name) under the `Third Party` category
+   - Toggle to enable
 
-2. **Search and enable your extension**:
-    - Find your extension under the `Third Party` category.
-    - Toggle it to enable your extension.
+## Contributing
 
-## Code formatting
+We welcome contributions! This project is actively being developed with plans for:
 
-We have a pre-commit template to automatically format your code.
-To install pre-commit:
+- Spatial reasoning for obstacle detection
+- Visual semantic navigation
+- Advanced waypoint following
+- Additional robot platforms and tasks
+
+### Development Guidelines
+
+1. **Code Formatting**: We use pre-commit hooks for automatic code formatting
+
+   ```bash
+   pip install pre-commit
+   pre-commit run --all-files
+   ```
+
+2. **Code Style**: Follow the Isaac Lab coding conventions and use type hints where appropriate
+
+3. **Testing**: Before submitting, test your changes with:
+   - Zero-action agent to verify environment setup
+   - Random-action agent to test dynamics
+   - Training scripts to ensure RL workflows function correctly
+
+4. **Documentation**: Update relevant documentation when adding new features or tasks
+
+### Getting Started with Development
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes and test thoroughly
+4. Commit your changes (`git commit -m 'Add amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+## Code Formatting
+
+We use pre-commit hooks for automatic code formatting. To set up:
 
 ```bash
 pip install pre-commit
-```
-
-Then you can run pre-commit with:
-
-```bash
 pre-commit run --all-files
 ```
 
@@ -108,28 +190,70 @@ pre-commit run --all-files
 
 ### Pylance Missing Indexing of Extensions
 
-In some VsCode versions, the indexing of part of the extensions is missing.
-In this case, add the path to your extension in `.vscode/settings.json` under the key `"python.analysis.extraPaths"`.
+If IntelliSense is not working properly in VSCode:
+
+1. Add the extension path to `.vscode/settings.json` under `"python.analysis.extraPaths"`:
 
 ```json
 {
     "python.analysis.extraPaths": [
-        "<path-to-ext-repo>/source/wheeled_lab"
+        "<path-to-this-repo>/source/wheeled_lab",
+        "<path-to-isaaclab>/source/isaaclab",
+        "<path-to-isaaclab>/source/isaaclab_assets",
+        "<path-to-isaaclab>/source/isaaclab_tasks",
+        "<path-to-isaaclab>/source/isaaclab_rl"
     ]
 }
 ```
 
 ### Pylance Crash
 
-If you encounter a crash in `pylance`, it is probable that too many files are indexed and you run out of memory.
-A possible solution is to exclude some of omniverse packages that are not used in your project.
-To do so, modify `.vscode/settings.json` and comment out packages under the key `"python.analysis.extraPaths"`
-Some examples of packages that can likely be excluded are:
+If Pylance crashes due to memory issues, exclude unused Omniverse packages in `.vscode/settings.json`:
 
 ```json
-"<path-to-isaac-sim>/extscache/omni.anim.*"         // Animation packages
-"<path-to-isaac-sim>/extscache/omni.kit.*"          // Kit UI tools
-"<path-to-isaac-sim>/extscache/omni.graph.*"        // Graph UI tools
-"<path-to-isaac-sim>/extscache/omni.services.*"     // Services tools
-...
+{
+    "python.analysis.exclude": [
+        "<path-to-isaac-sim>/extscache/omni.anim.*",
+        "<path-to-isaac-sim>/extscache/omni.kit.*",
+        "<path-to-isaac-sim>/extscache/omni.graph.*",
+        "<path-to-isaac-sim>/extscache/omni.services.*"
+    ]
+}
 ```
+
+### Environment Not Found
+
+If environments don't appear when running `scripts/list_envs.py`:
+
+1. Ensure the extension is installed: `pip install -e source/wheeled_lab`
+2. Check that the `config` module is being imported (see `source/wheeled_lab/wheeled_lab/tasks/drifting/__init__.py`)
+3. Verify gymnasium registrations are correct
+
+### Import Errors
+
+If you encounter import errors:
+
+1. Verify Isaac Lab is properly installed: `./isaaclab.sh -i`
+2. Ensure you're using the correct Python environment
+3. Check that all dependencies are installed: `pip install -r requirements.txt` (if available)
+
+## Acknowledgments
+
+This project is an adaptation of [WheeledLab](https://github.com/UWRobotLearning/WheeledLab) by the University of Washington Robot Learning Lab. We extend our gratitude to the original authors for their excellent work on wheeled robotics simulation.
+
+## License
+
+This project follows the same license as Isaac Lab. See the LICENSE file for details.
+
+## References
+
+### Original WheeledLab
+
+- **Repository**: [UWRobotLearning/WheeledLab](https://github.com/UWRobotLearning/WheeledLab)
+- **Paper**: [Demonstrating WheeledLab: Modern Sim2Real for Low-cost, Open-source Wheeled Robotics](https://arxiv.org/abs/2502.07380)
+
+### Robot Platforms
+
+- **MuSHR**: [MuSHR: A Low-Cost, Open-Source Robotic Racecar](https://arxiv.org/abs/1908.08031)
+- **F1Tenth**: [F1TENTH: An Open-source Evaluation Environment](https://proceedings.mlr.press/v123/o-kelly20a.html)
+- **HOUND**: [Demonstrating HOUND: A Low-cost Research Platform](https://arxiv.org/abs/2311.11199)
