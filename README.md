@@ -1,6 +1,6 @@
 # Labs for Wheels
 
-An isolated extension for wheeled robotics simulation and reinforcement learning, built on Isaac Lab.
+![Repository Header](assets/repo-header.png)
 
 ## Overview
 
