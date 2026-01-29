@@ -13,11 +13,12 @@ This project is an **adaptation of [WheeledLab](https://github.com/UWRobotLearni
 - **Modularity**: Clean separation of tasks, assets, and configurations for easy extension
 - **RL-Ready**: Pre-configured environments for reinforcement learning with RSL-RL and skrl
 
-**Future Features (In Development):**
+**What can the Hot Wheels do? Well, they can perform:**
 
 - Spatial reasoning for obstacle detection
 - Visual semantic navigation
 - Advanced waypoint following
+- Drifting
 
 ## Prerequisites
 

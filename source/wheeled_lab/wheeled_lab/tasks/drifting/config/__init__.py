@@ -1,39 +1,16 @@
 import gymnasium as gym
-from isaaclab.envs import ManagerBasedRLEnv
+from wheeled_lab.tasks.common.utils import create_env_wrapper
 
 from .agents import *
 
+# Create wrapper functions using the common utility
+_make_mushr_drift_env = create_env_wrapper(
+    "wheeled_lab.tasks.drifting.mushr_drift_env_cfg:MushrDriftRLEnvCfg"
+)
 
-def _make_mushr_drift_env(**kwargs):
-    """Wrapper to create Mushr drift environment, filtering metadata kwargs."""
-    # Filter out metadata kwargs that shouldn't be passed to the environment
-    metadata_keys = {"env_cfg_entry_point", "rsl_rl_cfg_entry_point"}
-    filtered_kwargs = {k: v for k, v in kwargs.items() if k not in metadata_keys}
-    
-    # If cfg is provided, use it; otherwise create from config class
-    if "cfg" in filtered_kwargs:
-        cfg = filtered_kwargs.pop("cfg")
-    else:
-        from wheeled_lab.tasks.drifting.mushr_drift_env_cfg import MushrDriftRLEnvCfg
-        cfg = MushrDriftRLEnvCfg()
-    
-    return ManagerBasedRLEnv(cfg=cfg, **filtered_kwargs)
-
-
-def _make_f1tenth_drift_env(**kwargs):
-    """Wrapper to create F1Tenth drift environment, filtering metadata kwargs."""
-    # Filter out metadata kwargs that shouldn't be passed to the environment
-    metadata_keys = {"env_cfg_entry_point", "rsl_rl_cfg_entry_point"}
-    filtered_kwargs = {k: v for k, v in kwargs.items() if k not in metadata_keys}
-    
-    # If cfg is provided, use it; otherwise create from config class
-    if "cfg" in filtered_kwargs:
-        cfg = filtered_kwargs.pop("cfg")
-    else:
-        from wheeled_lab.tasks.drifting.f1tenth_drift_env_cfg import F1TenthDriftRLEnvCfg
-        cfg = F1TenthDriftRLEnvCfg()
-    
-    return ManagerBasedRLEnv(cfg=cfg, **filtered_kwargs)
+_make_f1tenth_drift_env = create_env_wrapper(
+    "wheeled_lab.tasks.drifting.f1tenth_drift_env_cfg:F1TenthDriftRLEnvCfg"
+)
 
 
 gym.register(

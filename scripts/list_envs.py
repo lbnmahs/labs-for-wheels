@@ -54,7 +54,7 @@ def main():
     if index == 0:
         print("No environments found with 'Template-' prefix.")
     else:
-    print(table)
+        print(table)
 
 
 if __name__ == "__main__":
