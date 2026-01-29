@@ -253,8 +253,6 @@ This project follows the same license as Isaac Lab. See the LICENSE file for det
 - **Repository**: [UWRobotLearning/WheeledLab](https://github.com/UWRobotLearning/WheeledLab)
 - **Paper**: [Demonstrating WheeledLab: Modern Sim2Real for Low-cost, Open-source Wheeled Robotics](https://arxiv.org/abs/2502.07380)
 
-### Robot Platforms
+### Robot Platform
 
 - **MuSHR**: [MuSHR: A Low-Cost, Open-Source Robotic Racecar](https://arxiv.org/abs/1908.08031)
-- **F1Tenth**: [F1TENTH: An Open-source Evaluation Environment](https://proceedings.mlr.press/v123/o-kelly20a.html)
-- **HOUND**: [Demonstrating HOUND: A Low-cost Research Platform](https://arxiv.org/abs/2311.11199)
