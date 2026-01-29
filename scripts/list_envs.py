@@ -46,10 +46,14 @@ def main():
     for task_spec in gym.registry.values():
         if "Template-" in task_spec.id:
             # add details to table
-            table.add_row([index + 1, task_spec.id, task_spec.entry_point, task_spec.kwargs["env_cfg_entry_point"]])
+            env_cfg_entry_point = task_spec.kwargs.get("env_cfg_entry_point", task_spec.entry_point)
+            table.add_row([index + 1, task_spec.id, task_spec.entry_point, env_cfg_entry_point])
             # increment count
             index += 1
 
+    if index == 0:
+        print("No environments found with 'Template-' prefix.")
+    else:
     print(table)
 
 
