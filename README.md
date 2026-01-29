@@ -1,6 +1,6 @@
 # Labs for Wheels
 
-An isolated extension for wheeled robotics simulation and reinforcement learning, built on Isaac Lab.
+![Repository Header](assets/repo-header.png)
 
 ## Overview
 
@@ -13,11 +13,12 @@ This project is an **adaptation of [WheeledLab](https://github.com/UWRobotLearni
 - **Modularity**: Clean separation of tasks, assets, and configurations for easy extension
 - **RL-Ready**: Pre-configured environments for reinforcement learning with RSL-RL and skrl
 
-**Future Features (In Development):**
+**What can the Hot Wheels do? Well, they can perform:**
 
 - Spatial reasoning for obstacle detection
 - Visual semantic navigation
 - Advanced waypoint following
+- Drifting
 
 ## Prerequisites
 
@@ -252,8 +253,6 @@ This project follows the same license as Isaac Lab. See the LICENSE file for det
 - **Repository**: [UWRobotLearning/WheeledLab](https://github.com/UWRobotLearning/WheeledLab)
 - **Paper**: [Demonstrating WheeledLab: Modern Sim2Real for Low-cost, Open-source Wheeled Robotics](https://arxiv.org/abs/2502.07380)
 
-### Robot Platforms
+### Robot Platform
 
 - **MuSHR**: [MuSHR: A Low-Cost, Open-Source Robotic Racecar](https://arxiv.org/abs/1908.08031)
-- **F1Tenth**: [F1TENTH: An Open-source Evaluation Environment](https://proceedings.mlr.press/v123/o-kelly20a.html)
-- **HOUND**: [Demonstrating HOUND: A Low-cost Research Platform](https://arxiv.org/abs/2311.11199)

@@ -1,25 +1,28 @@
+"""Base PPO runner configuration with common defaults."""
 from isaaclab.utils import configclass
 from isaaclab_rl.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlPpoActorCriticCfg, RslRlPpoAlgorithmCfg
 
-@configclass
-class F1TenthPPORunnerCfg(RslRlOnPolicyRunnerCfg):
-    class_name = "OnPolicyRunner"
-    # Training hyperparameters (adjust as needed)
-    num_steps_per_env = 128
-    max_iterations = 1500
-    save_interval = 50
-    experiment_name = "ppo_f1tenth"
-    empirical_normalization = False  # Disable if using proprioceptive-only obs
 
-    # Policy architecture
+@configclass
+class BasePPORunnerCfg(RslRlOnPolicyRunnerCfg):
+    """Base PPO runner configuration with common defaults.
+    
+    This class provides sensible defaults for PPO training that can be inherited
+    and customized by task-specific configurations.
+    """
+    
+    class_name = "OnPolicyRunner"
+    num_steps_per_env = 128
+    save_interval = 50
+    empirical_normalization = False
+    
     policy = RslRlPpoActorCriticCfg(
         init_noise_std=1.0,
         actor_hidden_dims=[64, 64],
         critic_hidden_dims=[64, 64],
-        activation="elu",
+        activation="elu",  # Default activation, can be overridden in subclasses
     )
-
-    # PPO algorithm parameters
+    
     algorithm = RslRlPpoAlgorithmCfg(
         value_loss_coef=1.0,
         use_clipped_value_loss=True,

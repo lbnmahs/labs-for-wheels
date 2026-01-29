@@ -33,12 +33,10 @@ import wheeled_lab.tasks  # noqa: F401
 def main():
     """Print all environments registered in `wheeled_lab` extension."""
     # print all the available environments
-    table = PrettyTable(["S. No.", "Task Name", "Entry Point", "Config"])
+    table = PrettyTable(["No.", "Task Name"])
     table.title = "Available Environments in Isaac Lab"
     # set alignment of table columns
     table.align["Task Name"] = "l"
-    table.align["Entry Point"] = "l"
-    table.align["Config"] = "l"
 
     # count of environments
     index = 0
@@ -46,15 +44,14 @@ def main():
     for task_spec in gym.registry.values():
         if "Template-" in task_spec.id:
             # add details to table
-            env_cfg_entry_point = task_spec.kwargs.get("env_cfg_entry_point", task_spec.entry_point)
-            table.add_row([index + 1, task_spec.id, task_spec.entry_point, env_cfg_entry_point])
+            table.add_row([index + 1, task_spec.id])
             # increment count
             index += 1
 
     if index == 0:
         print("No environments found with 'Template-' prefix.")
     else:
-    print(table)
+        print(table)
 
 
 if __name__ == "__main__":
