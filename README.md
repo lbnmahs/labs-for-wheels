@@ -4,7 +4,8 @@
 
 ## Overview
 
-An **adaptation of [WheeledLab](https://github.com/UWRobotLearning/WheeledLab)** restructured as an isolated extension for Isaac Lab, enabling independent development of wheeled robotics capabilities.
+**Labs for Wheels** is an **adaptation of [WheeledLab](https://github.com/UWRobotLearning/WheeledLab)** restructured as an isolated extension for Isaac Lab, enabling independent development of wheeled robotics capabilities.  
+The goal of this project is to train robot "Hot Wheels" to drive and drift using deep reinforcement learning.
 
 **Features:**
 - Isolated extension outside core Isaac Lab repository
