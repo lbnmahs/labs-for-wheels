@@ -97,6 +97,11 @@ from isaaclab_tasks.utils import get_checkpoint_path
 from isaaclab_tasks.utils.hydra import hydra_task_config
 
 import wheeled_lab.tasks  # noqa: F401
+from wheeled_lab.tasks.common.utils import resolve_task_name
+
+# Resolve short task name to full task name (after app launcher is initialized)
+if args_cli.task:
+    args_cli.task = resolve_task_name(args_cli.task, is_play=False)
 
 torch.backends.cuda.matmul.allow_tf32 = True
 torch.backends.cudnn.allow_tf32 = True

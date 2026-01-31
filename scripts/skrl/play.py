@@ -114,6 +114,11 @@ from isaaclab_tasks.utils import get_checkpoint_path
 from isaaclab_tasks.utils.hydra import hydra_task_config
 
 import wheeled_lab.tasks  # noqa: F401
+from wheeled_lab.tasks.common.utils import resolve_task_name
+
+# Resolve short task name to full task name
+if args_cli.task:
+    args_cli.task = resolve_task_name(args_cli.task, is_play=True)
 
 # config shortcuts
 if args_cli.agent is None:

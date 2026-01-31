@@ -5,7 +5,7 @@ from wheeled_lab.tasks.common.agents import BasePPORunnerCfg
 @configclass
 class MushrPPORunnerCfg(BasePPORunnerCfg):
     """PPO runner configuration for Mushr elevation task."""
-    max_iterations = 4000
+    max_iterations = 1500
     experiment_name = "ppo_mushr_elevation"
     # Override activation to use relu instead of elu
     policy = RslRlPpoActorCriticCfg(

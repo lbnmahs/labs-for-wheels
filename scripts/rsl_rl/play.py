@@ -40,6 +40,7 @@ cli_args.add_rsl_rl_args(parser)
 AppLauncher.add_app_launcher_args(parser)
 # parse the arguments
 args_cli, hydra_args = parser.parse_known_args()
+
 # always enable cameras to record video
 if args_cli.video:
     args_cli.enable_cameras = True
@@ -78,6 +79,11 @@ from isaaclab_tasks.utils import get_checkpoint_path
 from isaaclab_tasks.utils.hydra import hydra_task_config
 
 import wheeled_lab.tasks  # noqa: F401
+from wheeled_lab.tasks.common.utils import resolve_task_name
+
+# Resolve short task name to full task name (after app launcher is initialized)
+if args_cli.task:
+    args_cli.task = resolve_task_name(args_cli.task, is_play=True)
 
 
 @hydra_task_config(args_cli.task, args_cli.agent)
