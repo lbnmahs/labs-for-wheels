@@ -126,31 +126,6 @@ Setting up your IDE with proper IntelliSense is **strongly recommended** for dev
 3. **Install Python extension:**
    - Make sure you have the Microsoft Python extension installed in VSCode
 
-### Setup as Omniverse Extension (Optional)
-
-To enable this extension in Omniverse:
-
-1. **Add extension search paths:**
-   - Open Omniverse → `Window` → `Extensions`
-   - Click the **Hamburger Icon** → `Settings`
-   - In `Extension Search Paths`, add:
-     - Absolute path to this repository's `source` directory
-     - Path to Isaac Lab's extension directory (`IsaacLab/source`)
-   - Click **Hamburger Icon** → `Refresh`
-
-2. **Enable the extension:**
-   - Find `labs_for_wheels` (or `wheeled_lab` depending on package name) under the `Third Party` category
-   - Toggle to enable
-
-## Contributing
-
-We welcome contributions! This project is actively being developed with plans for:
-
-- Spatial reasoning for obstacle detection
-- Visual semantic navigation
-- Advanced waypoint following
-- Additional robot platforms and tasks
-
 ### Development Guidelines
 
 1. **Code Formatting**: We use pre-commit hooks for automatic code formatting
