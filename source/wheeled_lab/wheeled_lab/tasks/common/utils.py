@@ -101,7 +101,14 @@ def create_env_wrapper(cfg_class_path: str):
         from importlib import import_module
         
         # Filter out metadata kwargs that shouldn't be passed to the environment
-        metadata_keys = {"env_cfg_entry_point", "rsl_rl_cfg_entry_point"}
+        metadata_keys = {
+            "env_cfg_entry_point",
+            "rsl_rl_cfg_entry_point",
+            "skrl_amp_cfg_entry_point",
+            "skrl_ippo_cfg_entry_point",
+            "skrl_mappo_cfg_entry_point",
+            "skrl_cfg_entry_point",
+        }
         filtered_kwargs = {k: v for k, v in kwargs.items() if k not in metadata_keys}
         
         # If cfg is provided, use it; otherwise create from config class
