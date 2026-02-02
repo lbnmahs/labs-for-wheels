@@ -33,9 +33,9 @@ from isaaclab.envs.mdp.events import reset_root_state_uniform
 
 from wheeledlab_assets import WHEELEDLAB_ASSETS_DATA_DIR
 from wheeled_lab.tasks.common.envs.mdp.observations import root_euler_xyz
-from wheeledlab_assets.mushr import MUSHR_SUS_CFG
+from wheeledlab_assets.mushr import MUSHR_SUS_CFG, MUSHR_SUS_2WD_CFG
 from wheeled_lab.tasks.common.envs.mdp.curriculums import increase_reward_weight_over_time
-from wheeled_lab.tasks.common.actions import Mushr4WDActionCfg
+from wheeled_lab.tasks.common.actions import MushrRWDActionCfg, Mushr4WDActionCfg
 
 # ##########################
 # ###### OBSERVATIONS ######
@@ -441,6 +441,9 @@ class MushrElevationRLEnvCfg(ManagerBasedRLEnvCfg):
     num_envs: int = 512
     env_spacing: float = 0.
 
+    # Drive mode: "rwd" (2WD rear) or "4wd"
+    drive_mode: str = "4wd"
+
     # Basic Settings
     observations: ElevationObsCfg = ElevationObsCfg()
     actions: Mushr4WDActionCfg = Mushr4WDActionCfg()
@@ -455,6 +458,27 @@ class MushrElevationRLEnvCfg(ManagerBasedRLEnvCfg):
 
     def __post_init__(self):
         super().__post_init__()
+
+        # Configure drive mode (robot + action space)
+        if self.drive_mode.lower() == "rwd":
+            self.actions = MushrRWDActionCfg()
+            self.scene = ElevationSceneCfg(
+                num_envs=self.num_envs,
+                env_spacing=self.env_spacing,
+            )
+            self.scene.robot = MUSHR_SUS_2WD_CFG.replace(
+                prim_path=self.scene.robot.prim_path
+            )
+        else:
+            self.actions = Mushr4WDActionCfg()
+            self.scene = ElevationSceneCfg(
+                num_envs=self.num_envs,
+                env_spacing=self.env_spacing,
+            )
+            self.scene.robot = MUSHR_SUS_CFG.replace(
+                prim_path=self.scene.robot.prim_path
+            )
+
         self.viewer.eye = [20., -20.0, 20.0]
         self.viewer.lookat = [0.0, 0.0, 0.]
 
@@ -463,10 +487,6 @@ class MushrElevationRLEnvCfg(ManagerBasedRLEnvCfg):
         self.actions.throttle_steer.scale = (3.0, 0.488)
         self.sim.render_interval = self.decimation
         self.episode_length_s = 20
-
-        self.scene = ElevationSceneCfg(
-            num_envs=self.num_envs, env_spacing=self.env_spacing,
-        )
 
 
 @configclass

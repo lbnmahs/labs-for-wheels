@@ -27,8 +27,8 @@ from isaaclab.envs import ManagerBasedEnv
 from isaaclab.envs import ManagerBasedRLEnvCfg
 
 from wheeledlab_assets import WHEELEDLAB_ASSETS_DATA_DIR
-from wheeledlab_assets.mushr import MUSHR_SUS_CFG
-from wheeled_lab.tasks.common.actions import Mushr4WDActionCfg
+from wheeledlab_assets.mushr import MUSHR_SUS_CFG, MUSHR_SUS_2WD_CFG
+from wheeled_lab.tasks.common.actions import MushrRWDActionCfg, Mushr4WDActionCfg
 
 from .utils import create_geometry, generate_random_poses, TraversabilityHashmapUtil
 from . import mdp_sensors
@@ -416,6 +416,9 @@ class MushrVisualRLEnvCfg(ManagerBasedRLEnvCfg):
     num_envs: int = 1024
     env_spacing: float = 0.
 
+    # Drive mode: "rwd" (2WD rear) or "4wd"
+    drive_mode: str = "4wd"
+
     # Reset config
     events: VisualEventsCfg = VisualEventsCfg()
     actions: Mushr4WDActionCfg = Mushr4WDActionCfg()
@@ -429,6 +432,27 @@ class MushrVisualRLEnvCfg(ManagerBasedRLEnvCfg):
     def __post_init__(self):
         """Post initialization."""
         super().__post_init__()
+
+        # Configure drive mode (robot + action space)
+        if self.drive_mode.lower() == "rwd":
+            self.actions = MushrRWDActionCfg()
+            self.scene = MushrVisualSceneCfg(
+                num_envs=self.num_envs,
+                env_spacing=self.env_spacing,
+            )
+            self.scene.robot = MUSHR_SUS_2WD_CFG.replace(
+                prim_path=self.scene.robot.prim_path
+            )
+        else:
+            self.actions = Mushr4WDActionCfg()
+            self.scene = MushrVisualSceneCfg(
+                num_envs=self.num_envs,
+                env_spacing=self.env_spacing,
+            )
+            self.scene.robot = MUSHR_SUS_CFG.replace(
+                prim_path=self.scene.robot.prim_path
+            )
+
         # viewer settings
         self.viewer.eye = [40., 0.0, 45.0] 
         self.viewer.lookat = [0.0, 0.0, -3.]
@@ -437,11 +461,6 @@ class MushrVisualRLEnvCfg(ManagerBasedRLEnvCfg):
 
         # Terminations config
         self.episode_length_s = 10
-
-        # Scene settings
-        self.scene = MushrVisualSceneCfg(
-            num_envs=self.num_envs, env_spacing=self.env_spacing,
-        )
 
 @configclass
 class MushrVisualRLRandomEnvCfg(MushrVisualRLEnvCfg):

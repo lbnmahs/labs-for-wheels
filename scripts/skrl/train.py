@@ -33,7 +33,7 @@ parser.add_argument(
         "--algorithm is used to determine the default agent configuration entry point."
     ),
 )
-parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment")
+parser.add_argument("--seed", type=int, default=42, help="Seed used for the environment")
 parser.add_argument(
     "--distributed", action="store_true", default=False, help="Run training with multiple GPUs or nodes."
 )
@@ -53,6 +53,13 @@ parser.add_argument(
     default="PPO",
     choices=["AMP", "PPO", "IPPO", "MAPPO"],
     help="The RL algorithm used for training the skrl agent.",
+)
+parser.add_argument(
+    "--drive_mode",
+    type=str,
+    default=None,
+    choices=["rwd", "4wd"],
+    help="Drive mode for MuSHR-based manager environments (if supported by the task).",
 )
 
 # append AppLauncher cli args
@@ -133,6 +140,10 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     # override configurations with non-hydra CLI arguments
     env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else env_cfg.scene.num_envs
     env_cfg.sim.device = args_cli.device if args_cli.device is not None else env_cfg.sim.device
+
+    # Configure drive mode for supported manager-based environments
+    if hasattr(env_cfg, "drive_mode") and args_cli.drive_mode is not None:
+        env_cfg.drive_mode = args_cli.drive_mode.lower()
 
     # check for invalid combination of CPU device with distributed training
     if args_cli.distributed and args_cli.device is not None and "cpu" in args_cli.device:
