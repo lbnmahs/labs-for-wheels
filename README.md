@@ -71,12 +71,12 @@ python scripts/list_envs.py  # Should show Template-WheeledLab-* environments
 
 ### Available Tasks
 
-| Shorthand | Full Name | Notes |
-|-----------|-----------|-------|
-| `waypoint` | `Template-WheeledLab-Mushr-Waypoint-v0` | |
-| `drift` | `Template-WheeledLab-Mushr-Drift-v0` | |
-| `visual` | `Template-WheeledLab-Mushr-Visual-v0` | |
-| `elevation` | `Template-WheeledLab-Mushr-Elevation-v0` | |
+| Shorthand | Full Name |
+|-----------|-----------|
+| `waypoint` | `Template-WheeledLab-Mushr-Waypoint-v0` |
+| `drift` | `Template-WheeledLab-Mushr-Drift-v0` |
+| `visual` | `Template-WheeledLab-Mushr-Visual-v0` |
+| `elevation` | `Template-WheeledLab-Mushr-Elevation-v0` |
 
 ### Training
 
