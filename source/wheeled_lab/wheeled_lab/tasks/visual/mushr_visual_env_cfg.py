@@ -26,8 +26,8 @@ from isaaclab.utils.math import euler_xyz_from_quat
 from isaaclab.envs import ManagerBasedEnv
 from isaaclab.envs import ManagerBasedRLEnvCfg
 
-from wheeledlab_assets import WHEELEDLAB_ASSETS_DATA_DIR
-from wheeledlab_assets.mushr import MUSHR_SUS_CFG, MUSHR_SUS_2WD_CFG
+from wheeled_lab.assets.articulations import WHEELEDLAB_ASSETS_DATA_DIR
+from wheeled_lab.assets.articulations.mushr import MUSHR_SUS_CFG, MUSHR_SUS_2WD_CFG
 from wheeled_lab.tasks.common.actions import MushrRWDActionCfg, Mushr4WDActionCfg
 
 from .utils import create_geometry, generate_random_poses, TraversabilityHashmapUtil

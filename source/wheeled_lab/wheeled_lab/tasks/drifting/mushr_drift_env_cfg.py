@@ -14,9 +14,10 @@ from isaaclab.managers import (
     TerminationTermCfg as DoneTerm,
     SceneEntityCfg,
 )
-from wheeledlab.envs.mdp import increase_reward_weight_over_time
-from wheeledlab_assets import MUSHR_SUS_CFG, MUSHR_SUS_2WD_CFG
-from wheeledlab_tasks.common import BlindObsCfg, MushrRWDActionCfg, Mushr4WDActionCfg
+from wheeled_lab.tasks.common.envs.mdp.curriculums import increase_reward_weight_over_time
+from wheeled_lab.assets.articulations.mushr import MUSHR_SUS_CFG, MUSHR_SUS_2WD_CFG
+from wheeled_lab.tasks.common.observations import BlindObsCfg
+from wheeled_lab.tasks.common.actions import MushrRWDActionCfg, Mushr4WDActionCfg
 
 from .mdp import reset_root_state_along_track
 

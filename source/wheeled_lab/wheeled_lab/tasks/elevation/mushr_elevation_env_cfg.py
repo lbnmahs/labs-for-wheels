@@ -31,9 +31,9 @@ from isaaclab.assets import Articulation, RigidObject
 from isaaclab.envs.mdp.commands import UniformPose2dCommandCfg
 from isaaclab.envs.mdp.events import reset_root_state_uniform
 
-from wheeledlab_assets import WHEELEDLAB_ASSETS_DATA_DIR
+from wheeled_lab.assets.articulations import WHEELEDLAB_ASSETS_DATA_DIR
 from wheeled_lab.tasks.common.envs.mdp.observations import root_euler_xyz
-from wheeledlab_assets.mushr import MUSHR_SUS_CFG, MUSHR_SUS_2WD_CFG
+from wheeled_lab.assets.articulations.mushr import MUSHR_SUS_CFG, MUSHR_SUS_2WD_CFG
 from wheeled_lab.tasks.common.envs.mdp.curriculums import increase_reward_weight_over_time
 from wheeled_lab.tasks.common.actions import MushrRWDActionCfg, Mushr4WDActionCfg
 

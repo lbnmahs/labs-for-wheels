@@ -57,6 +57,9 @@ _build
 **/logs/*
 **/recordings/*
 
+# RGB Maps (generated during visual task training)
+**/rgb_maps/
+
 # Pre-Trained Checkpoints
 /.pretrained_checkpoints/
 
