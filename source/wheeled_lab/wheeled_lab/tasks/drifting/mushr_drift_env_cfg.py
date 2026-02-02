@@ -15,8 +15,8 @@ from isaaclab.managers import (
     SceneEntityCfg,
 )
 from wheeledlab.envs.mdp import increase_reward_weight_over_time
-from wheeledlab_assets import MUSHR_SUS_2WD_CFG
-from wheeledlab_tasks.common import BlindObsCfg, MushrRWDActionCfg
+from wheeledlab_assets import MUSHR_SUS_CFG, MUSHR_SUS_2WD_CFG
+from wheeledlab_tasks.common import BlindObsCfg, MushrRWDActionCfg, Mushr4WDActionCfg
 
 from .mdp import reset_root_state_along_track
 
@@ -372,6 +372,9 @@ class MushrDriftRLEnvCfg(ManagerBasedRLEnvCfg):
     num_envs: int = 1024
     env_spacing: float = 0.
 
+    # Drive mode: "rwd" (2WD rear) or "4wd"
+    drive_mode: str = "rwd"
+
     # Basic Settings
     observations: BlindObsCfg = BlindObsCfg()
     actions: MushrRWDActionCfg = MushrRWDActionCfg()
@@ -386,6 +389,28 @@ class MushrDriftRLEnvCfg(ManagerBasedRLEnvCfg):
         """Post initialization."""
         super().__post_init__()
 
+        # Configure drive mode (robot + action space)
+        if self.drive_mode.lower() == "4wd":
+            self.actions = Mushr4WDActionCfg()
+            # Use 4WD articulation config
+            self.scene = MushrDriftSceneCfg(
+                num_envs=self.num_envs,
+                env_spacing=self.env_spacing,
+            )
+            self.scene.robot = MUSHR_SUS_CFG.replace(
+                prim_path=self.scene.robot.prim_path
+            )
+        else:
+            self.actions = MushrRWDActionCfg()
+            # Use 2WD articulation config
+            self.scene = MushrDriftSceneCfg(
+                num_envs=self.num_envs,
+                env_spacing=self.env_spacing,
+            )
+            self.scene.robot = MUSHR_SUS_2WD_CFG.replace(
+                prim_path=self.scene.robot.prim_path
+            )
+
         # viewer settings
         self.viewer.eye = [4., -4., 4.]
         self.viewer.lookat = [0.0, 0.0, 0.]
@@ -397,11 +422,6 @@ class MushrDriftRLEnvCfg(ManagerBasedRLEnvCfg):
         self.actions.throttle_steer.scale = (MAX_SPEED, 0.488)
 
         self.observations.policy.enable_corruption = True
-
-        # Scene settings
-        self.scene = MushrDriftSceneCfg(
-            num_envs=self.num_envs, env_spacing=self.env_spacing,
-        )
 
 ######################
 ###### PLAY ENV ######

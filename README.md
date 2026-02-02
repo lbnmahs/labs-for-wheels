@@ -87,6 +87,9 @@ python scripts/rsl_rl/train.py --task waypoint --headless
 
 # With options
 python scripts/rsl_rl/train.py --task waypoint --headless --num_envs 2048 --seed 42 --max_iterations 1000 --video
+
+# Switch drive mode (rwd or 4wd)
+python scripts/rsl_rl/train.py --task drift --headless --drive_mode 4wd
 ```
 
 **skrl:**
@@ -118,6 +121,7 @@ python scripts/skrl/play.py --task waypoint --headless --num_envs 20 --checkpoin
 - `--video`: Record videos
 - `--checkpoint`: Model checkpoint path
 - `--device`: Device (`cuda` or `cpu`)
+- `--drive_mode`: Drive mode (`rwd` or `4wd`) - switches between rear-wheel and four-wheel drive
 
 **Test Environments:**
 ```bash

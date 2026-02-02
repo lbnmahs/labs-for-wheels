@@ -25,6 +25,13 @@ parser.add_argument(
 parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument(
+    "--drive_mode",
+    type=str,
+    default=None,
+    choices=["rwd", "4wd"],
+    help="Drive mode for MuSHR-based manager environments (if supported by the task).",
+)
+parser.add_argument(
     "--agent", type=str, default="rsl_rl_cfg_entry_point", help="Name of the RL agent configuration entry point."
 )
 parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment")
@@ -95,6 +102,9 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
 
     # override configurations with non-hydra CLI arguments
     agent_cfg: RslRlBaseRunnerCfg = cli_args.update_rsl_rl_cfg(agent_cfg, args_cli)
+    # Configure drive mode for supported manager-based environments
+    if hasattr(env_cfg, "drive_mode") and args_cli.drive_mode is not None:
+        env_cfg.drive_mode = args_cli.drive_mode.lower()
     env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else env_cfg.scene.num_envs
 
     # set the environment seed

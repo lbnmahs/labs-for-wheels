@@ -57,6 +57,13 @@ parser.add_argument(
     help="The RL algorithm used for training the skrl agent.",
 )
 parser.add_argument("--real-time", action="store_true", default=False, help="Run in real-time, if possible.")
+parser.add_argument(
+    "--drive_mode",
+    type=str,
+    default=None,
+    choices=["rwd", "4wd"],
+    help="Drive mode for MuSHR-based manager environments (if supported by the task).",
+)
 
 # append AppLauncher cli args
 AppLauncher.add_app_launcher_args(parser)
@@ -139,6 +146,10 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, expe
     # override configurations with non-hydra CLI arguments
     env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else env_cfg.scene.num_envs
     env_cfg.sim.device = args_cli.device if args_cli.device is not None else env_cfg.sim.device
+
+    # Configure drive mode for supported manager-based environments
+    if hasattr(env_cfg, "drive_mode") and args_cli.drive_mode is not None:
+        env_cfg.drive_mode = args_cli.drive_mode.lower()
 
     # configure the ML framework into the global skrl variable
     if args_cli.ml_framework.startswith("jax"):

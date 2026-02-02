@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-from wheeled_lab.assets.articulations.mushr import MUSHR_SUS_2WD_CFG
+from wheeled_lab.assets.articulations.mushr import MUSHR_SUS_CFG, MUSHR_SUS_2WD_CFG
 from .waypoints import WAYPOINT_CFG
 from .markers import ROBOT_MARKER_CFG
 
@@ -17,6 +17,9 @@ from isaaclab.utils import configclass
 @configclass
 class MushrWaypointEnvCfg(DirectRLEnvCfg):
     """Configuration for MuSHR vehicle waypoint-following environment."""
+
+    # Drive mode: "rwd" (2WD rear) or "4wd"
+    drive_mode: str = "rwd"
     
     # Environment timing: decimation=4 means actions applied every 4 sim steps
     decimation = 4
@@ -72,3 +75,26 @@ class MushrWaypointEnvCfg(DirectRLEnvCfg):
         num_envs=4096, env_spacing=env_spacing, replicate_physics=True
     )
     
+    def __post_init__(self):
+        """Post initialization for drive mode selection."""
+        super().__post_init__()
+
+        # Preserve prim path pattern
+        prim_path = self.robot_cfg.prim_path
+
+        if self.drive_mode.lower() == "4wd":
+            # Use 4WD articulation config and all wheel throttles
+            self.robot_cfg = MUSHR_SUS_CFG.replace(prim_path=prim_path)
+            self.throttle_dof_name = [
+                "back_left_wheel_throttle",
+                "back_right_wheel_throttle",
+                "front_left_wheel_throttle",
+                "front_right_wheel_throttle",
+            ]
+        else:
+            # Default: 2WD rear
+            self.robot_cfg = MUSHR_SUS_2WD_CFG.replace(prim_path=prim_path)
+            self.throttle_dof_name = [
+                "back_left_wheel_throttle",
+                "back_right_wheel_throttle",
+            ]
