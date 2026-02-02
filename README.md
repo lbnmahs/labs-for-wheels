@@ -71,12 +71,12 @@ python scripts/list_envs.py  # Should show Template-WheeledLab-* environments
 
 ### Available Tasks
 
-| Shorthand | Full Name |
-|-----------|-----------|
-| `waypoint` | `Template-WheeledLab-Mushr-Waypoint-v0` |
-| `drift` | `Template-WheeledLab-Mushr-Drift-v0` |
-| `visual` | `Template-WheeledLab-Mushr-Visual-v0` |
-| `elevation` | `Template-WheeledLab-Mushr-Elevation-v0` |
+| Shorthand | Full Name | Notes |
+|-----------|-----------|-------|
+| `waypoint` | `Template-WheeledLab-Mushr-Waypoint-v0` | |
+| `drift` | `Template-WheeledLab-Mushr-Drift-v0` | |
+| `visual` | `Template-WheeledLab-Mushr-Visual-v0` | |
+| `elevation` | `Template-WheeledLab-Mushr-Elevation-v0` | |
 
 ### Training
 
@@ -90,6 +90,9 @@ python scripts/rsl_rl/train.py --task waypoint --headless --num_envs 2048 --seed
 
 # Switch drive mode (rwd or 4wd)
 python scripts/rsl_rl/train.py --task drift --headless --drive_mode 4wd
+
+# Visual task requires --enable_cameras
+python scripts/rsl_rl/train.py --task visual --headless --enable_cameras
 ```
 
 **skrl:**
@@ -99,6 +102,9 @@ python scripts/skrl/train.py --task waypoint --headless
 
 # Different algorithms: PPO, AMP, IPPO, MAPPO
 python scripts/skrl/train.py --task waypoint --headless --algorithm AMP
+
+# Visual task requires --enable_cameras
+python scripts/skrl/train.py --task visual --headless --enable_cameras
 ```
 
 ### Playing/Inference
@@ -106,11 +112,17 @@ python scripts/skrl/train.py --task waypoint --headless --algorithm AMP
 **RSL-RL:**
 ```bash
 python scripts/rsl_rl/play.py --task waypoint --headless --num_envs 20 --checkpoint <path/to/checkpoint.pt>
+
+# Visual task requires --enable_cameras
+python scripts/rsl_rl/play.py --task visual --headless --num_envs 20 --checkpoint <path/to/checkpoint.pt> --enable_cameras
 ```
 
 **skrl:**
 ```bash
 python scripts/skrl/play.py --task waypoint --headless --num_envs 20 --checkpoint <path/to/checkpoint.pt> --algorithm PPO
+
+# Visual task requires --enable_cameras
+python scripts/skrl/play.py --task visual --headless --num_envs 20 --checkpoint <path/to/checkpoint.pt> --algorithm PPO --enable_cameras
 ```
 
 **Common Options:**
@@ -122,6 +134,7 @@ python scripts/skrl/play.py --task waypoint --headless --num_envs 20 --checkpoin
 - `--checkpoint`: Model checkpoint path
 - `--device`: Device (`cuda` or `cpu`)
 - `--drive_mode`: Drive mode (`rwd` or `4wd`) - switches between rear-wheel and four-wheel drive
+- `--enable_cameras`: **Required for visual task** - enables camera sensors for RGB observations
 
 **Test Environments:**
 ```bash
